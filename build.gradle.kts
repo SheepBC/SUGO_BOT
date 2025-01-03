@@ -7,6 +7,9 @@ version = "1.0-SNAPSHOT"
 
 repositories {
     mavenCentral()
+
+    maven("https://maven.lavalink.dev/releases")
+    maven("https://jitpack.io")
 }
 
 dependencies {
@@ -19,6 +22,9 @@ dependencies {
     implementation("com.moandjiezana.toml:toml4j:0.7.2")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.0")
+
+    implementation("dev.lavalink.youtube:common:1.11.3")
+    implementation("dev.arbjerg:lavaplayer:2.2.2")
 
 }
 
