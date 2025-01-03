@@ -1,19 +1,16 @@
 package Bc.Sheep_BC.Main
 
-import Bc.Sheep_BC.Tools.getToml
-import Bc.Sheep_BC.Tools.setString
 import Commands.Main_Command
+import Interactions.mainInteraction
 import Main.Bot_Config
 import Tools.Message_Tool
-import com.moandjiezana.toml.Toml
-import com.moandjiezana.toml.TomlWriter
 import dev.kord.core.Kord
-import dev.kord.core.behavior.channel.createMessage
+import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
+import dev.kord.core.event.interaction.InteractionCreateEvent
 import dev.kord.core.event.message.MessageCreateEvent
 import dev.kord.core.on
 import dev.kord.gateway.Intent
 import dev.kord.gateway.PrivilegedIntent
-import java.io.File
 
 suspend fun main() {
 
@@ -32,6 +29,10 @@ suspend fun main() {
 
         mainCommand.run(this)
 
+    }
+
+    kord.on<ComponentInteractionCreateEvent> {
+        mainInteraction.run(this)
     }
 
     kord.login {
