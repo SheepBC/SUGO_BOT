@@ -26,7 +26,6 @@ class Main_Command {
 
         val function = getfuncion(msg_list[0].substring(1))!!
 
-
         function.callSuspendBy(
             mapOf(
                 function.parameters[0] to command_funcion_instances[function]!!.objectInstance,
@@ -34,7 +33,6 @@ class Main_Command {
                 function.parameters[2] to msg_list,
             )
         )
-
 
     }
 
@@ -55,7 +53,7 @@ class Main_Command {
 
     private fun getfuncion(command: String): KFunction<*>? {
         for( funcion in command_funcions){
-            if (funcion.findAnnotation<Command>()!!.commands.contains(command)){
+            if (funcion.findAnnotation<Command>()!!.commands.contains(command.lowercase())){
                 return funcion
             }
         }
