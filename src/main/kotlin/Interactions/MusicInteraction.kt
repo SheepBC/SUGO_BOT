@@ -82,7 +82,7 @@ object MusicInteraction {
         }
         event.replay {
             embed {
-                title = "반복이 __**${task.repeat.value}__**으로 변경되었습니다."
+                title = "반복이 __${task.repeat.value}__으로 변경되었습니다."
                 color = OtherTool.getRandomColor()
             }
         }

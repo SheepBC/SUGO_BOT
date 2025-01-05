@@ -119,6 +119,10 @@ class MusicTask(
         MusicManager.list.remove(guildId.value)
     }
 
+    fun addTrackIndex(num: Int){
+        track_index = (track_index+num) % (tracks.size)
+    }
+
     override fun onTrackEnd(player: AudioPlayer?, track: AudioTrack?, endReason: AudioTrackEndReason?) {
         when(repeat){
             MusicRepeat.NOT ->{
@@ -144,7 +148,7 @@ class MusicTask(
             }
             MusicRepeat.TRACKS ->{
                 if(tracks.isEmpty()) MusicManager.list.remove(guildId.value)
-                track_index = (track_index+1) % (tracks.size)
+                addTrackIndex(1)
                 player?.playTrack(tracks[track_index].makeClone())
 
             }
@@ -164,7 +168,7 @@ class MusicTask(
 
 enum class MusicRepeat(val value: String) {
     NOT( "끄기"),
-    THIS_TRACK("현재 곡"),
+    THIS_TRACK("한곡"),
     TRACKS("목록"),
     RANDOM("랜덤");
 }

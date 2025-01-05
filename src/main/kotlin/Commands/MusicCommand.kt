@@ -107,6 +107,9 @@ class MusicCommand{
             }
 
             val task = MusicManager.list[event.guildId!!.value]!!
+            if(task.repeat == MusicRepeat.THIS_TRACK){
+                task.addTrackIndex(1)
+            }
             task.player.stopTrack()
 
             val track = task.player.playingTrack
