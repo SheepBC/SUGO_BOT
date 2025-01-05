@@ -5,7 +5,7 @@ import java.util.*
 import java.util.concurrent.TimeUnit
 
 
-object Other_Tool {
+object OtherTool {
 
     fun secondsToHHMMSS(millseconds: Long): String {
         val hours = TimeUnit.MILLISECONDS.toHours(millseconds)

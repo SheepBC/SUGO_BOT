@@ -1,11 +1,13 @@
 package Tools
 
+import dev.kord.common.entity.DiscordPartialEmoji
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.behavior.channel.createEmbed
 import dev.kord.core.behavior.interaction.response.respond
 import dev.kord.core.behavior.reply
 import dev.kord.core.entity.Member
 import dev.kord.core.entity.Message
+import dev.kord.core.entity.ReactionEmoji
 import dev.kord.core.entity.interaction.response.EphemeralMessageInteractionResponse
 import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
 import dev.kord.core.event.message.MessageCreateEvent
@@ -35,23 +37,8 @@ suspend fun MessageCreateEvent.replay(block: UserMessageCreateBuilder.() -> Unit
     return this.message.reply { block() }
 }
 
-suspend fun ComponentInteractionCreateEvent.responseEphemeral(msg: String): EphemeralMessageInteractionResponse {
-    return this.interaction.deferEphemeralResponse().respond { 
-        content = msg
-    }
-}
-
-suspend fun ComponentInteractionCreateEvent.responseEphemeral(builder: InteractionResponseModifyBuilder.() -> Unit)
-: EphemeralMessageInteractionResponse {
-    return this.interaction.deferEphemeralResponse().respond { builder()}
-}
-
-fun ComponentInteractionCreateEvent.getGuildId(): Snowflake? {
-    return this.interaction.data.guildId.value
-}
-
-suspend fun ComponentInteractionCreateEvent.getMember(): Member {
-    return this.interaction.user.asMember(this.getGuildId()!!)
+fun emoji(name: String): DiscordPartialEmoji{
+    return DiscordPartialEmoji(null,ReactionEmoji.Unicode(name).name)
 }
 
 fun EmbedBuilder.Companion.Thumbnail(uri: String): EmbedBuilder.Thumbnail {

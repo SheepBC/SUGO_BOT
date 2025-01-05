@@ -1,12 +1,11 @@
 package Bc.Sheep_BC.Main
 
 import Commands.Main_Command
-import Interactions.mainInteraction
-import Main.Bot_Config
+import Interactions.MainInteraction
+import Configs.BotConfig
 import Tools.Message_Tool
 import dev.kord.core.Kord
 import dev.kord.core.event.interaction.ComponentInteractionCreateEvent
-import dev.kord.core.event.interaction.InteractionCreateEvent
 import dev.kord.core.event.message.MessageCreateEvent
 import dev.kord.core.on
 import dev.kord.gateway.Intent
@@ -14,10 +13,10 @@ import dev.kord.gateway.PrivilegedIntent
 
 suspend fun main() {
 
-    val bot_toml = Bot_Config().Bot_Toml
+    val bot_toml = BotConfig().Bot_Toml
 
-    val kord = Kord(bot_toml.getString(Bot_Config.BOT_TOKEN))
-    val prefixes = bot_toml.getList<String>(Bot_Config.BOT_PREFIXES)
+    val kord = Kord(bot_toml.getString(BotConfig.BOT_TOKEN))
+    val prefixes = bot_toml.getList<String>(BotConfig.BOT_PREFIXES)
 
     val mainCommand = Main_Command()
 
@@ -32,12 +31,12 @@ suspend fun main() {
     }
 
     kord.on<ComponentInteractionCreateEvent> {
-        mainInteraction.run(this)
+        MainInteraction.run(this)
     }
 
     kord.login {
         presence {
-            playing(bot_toml.getString(Bot_Config.BOT_PLAYING))
+            playing(bot_toml.getString(BotConfig.BOT_PLAYING))
         }
 
         @OptIn(PrivilegedIntent::class)

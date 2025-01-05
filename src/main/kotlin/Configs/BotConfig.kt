@@ -1,9 +1,9 @@
-package Main
+package Configs
 
 import Bc.Sheep_BC.Tools.getToml
 import com.moandjiezana.toml.Toml
 
-class Bot_Config {
+class BotConfig {
 
     val Bot_Toml = Toml().getToml(BOT_INFORM_FILE_PATH)
 

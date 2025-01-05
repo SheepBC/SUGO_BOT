@@ -1,5 +1,8 @@
+import org.apache.tools.ant.taskdefs.Jar
+
 plugins {
     kotlin("jvm") version "1.9.23"
+    id("io.ktor.plugin") version "3.0.3"
 }
 
 group = "Bc.Sheep_BC"
@@ -31,6 +34,19 @@ dependencies {
 tasks.test {
     useJUnitPlatform()
 }
+
+application{
+     mainClass.set("Bc.Sheep_BC.Main.MainKt")
+}
+
 kotlin {
     jvmToolchain(21)
 }
+
+ktor{
+    fatJar {
+        archiveFileName.set("SUGO_BOT.jar")
+    }
+}
+
+

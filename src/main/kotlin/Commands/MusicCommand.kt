@@ -1,18 +1,21 @@
 package Commands
 
+import Configs.MusicConfig
 import Tools.*
 import dev.kord.common.entity.ButtonStyle
+import dev.kord.common.entity.DiscordPartialEmoji
 import dev.kord.core.behavior.channel.connect
+import dev.kord.core.entity.ReactionEmoji
 import dev.kord.core.event.message.MessageCreateEvent
 import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.actionRow
 import dev.kord.rest.builder.message.embed
 import dev.kord.voice.AudioFrame
 
-class Sing_Command{
+class MusicCommand{
     companion object {
         @Command(["노래","play"])
-        suspend fun sing(event: MessageCreateEvent, msg_list: List<String>){
+        suspend fun play(event: MessageCreateEvent, msg_list: List<String>){
 
             if(event.member!!.getVoiceState().getChannelOrNull() == null){
                 event.sendMessage("🎶음성 채널에 들어가 주세요.")
@@ -62,7 +65,7 @@ class Sing_Command{
                 val footerText = "${MusicManager.list[event.guildId!!.value]!!.tracks.size}번째 곡"
                 footer = EmbedBuilder.Footer(text = footerText)
 
-                color = Other_Tool.getRandomColor()
+                color = OtherTool.getRandomColor()
             }
 
         }
@@ -132,6 +135,7 @@ class Sing_Command{
             }
 
             val task = MusicManager.list[event.guildId!!.value]!!
+            task.repeat = MusicRepeat.NOT
             task.tracks.removeAll { true }
             task.player.stopTrack()
 
@@ -155,24 +159,28 @@ class Sing_Command{
                 val trackList = mutableListOf<EmbedBuilder.Field>()
                 val task = MusicManager.list[event.guildId!!.value]!!
 
-                for ( index in 0..task.tracks.size){
-                    if(index == 3) break
+                try{
+                    for ( index in 0..<task.tracks.size){
+                        if(index == 3) break
 
-                    val track = task.tracks[index]
-                    trackList.add(
-                        EmbedBuilder.Field(
-                            name = track.info.title,
-                            inline = false,
-                            value = track.getTime()
+                        val track = task.tracks[index]
+                        trackList.add(
+                            EmbedBuilder.Field(
+                                name = track.info.title,
+                                inline = false,
+                                value = track.getTime()
+                            )
                         )
-                    )
 
+                    }
+                }catch (e: Exception){
+                    println(e)
                 }
 
                 embed {
                     title = "노래 목록"
                     fields = trackList
-                    color = Other_Tool.getRandomColor()
+                    color = OtherTool.getRandomColor()
                     footer = EmbedBuilder.Footer(text = "총 ${task.tracks.size}곡")
                 }
 
@@ -180,7 +188,7 @@ class Sing_Command{
                     actionRow {
                         interactionButton(
                             style = ButtonStyle.Primary,
-                            customId = "MusicTrackList",
+                            customId = MusicConfig.TRACK_LIST,
                             builder = {
                                 label = "노래 목록 전체 보기"
                             }
@@ -205,22 +213,55 @@ class Sing_Command{
             }
             val task = MusicManager.list[event.guildId!!.value]!!
 
-            if(msg_list.size == 1){
-                event.sendEmbed {
-                    title = " 현재 반복은 **${task.repeat.value}**입니다."
-                    footer = EmbedBuilder.Footer(text = "숩반복 <한곡(one)|목록(list)|랜덤(random)|끄기(off)>")
-                    color = Other_Tool.getRandomColor()
+            event.replay {
+                embed {
+                    title = "현재 반복은 ${task.repeat.value}입니다."
+                    color = OtherTool.getRandomColor()
                 }
-                return
+                suppressEmbeds = false
+                actionRow {
+                    interactionButton(
+                        style =  ButtonStyle.Primary,
+                        customId = MusicConfig.REPEAT_NOT,
+                        builder = {
+                            label = "반복 끄기"
+                            emoji = emoji("❌")
+
+                        }
+                    )
+                    interactionButton(
+                        style =  ButtonStyle.Primary,
+                        customId = MusicConfig.REPEAT_ONE,
+                        builder = {
+                            label = "한곡"
+                            emoji = emoji("🔂")
+
+                        }
+                    )
+                    interactionButton(
+                        style =  ButtonStyle.Primary,
+                        customId = MusicConfig.REPEAT_LIST,
+                        builder = {
+                            label = "목록"
+                            emoji = emoji("🔁")
+
+                        }
+                    )
+                    interactionButton(
+                        style =  ButtonStyle.Primary,
+                        customId = MusicConfig.REPEAT_RANDOM,
+                        builder = {
+                            label = "랜덤"
+                            emoji = emoji("🔀")
+
+                        }
+                    )
+                }
             }
-
-            task.repeat = MusicManager.getRepeat(msg_list[1])
-
-            event.sendMessage("반복이 **${task.repeat.value}**으로 변경되었습니다.")
 
         }
 
-        @Command(["지금","현재","now"])
+        @Command(["지금","재생시간","현재","now"])
         suspend fun now(event: MessageCreateEvent,msg_list: List<String>){
 
             if(event.member!!.getVoiceState().getChannelOrNull() == null){
@@ -249,7 +290,7 @@ class Sing_Command{
                         EmbedBuilder.run { Field(name = "재생 시간",inline = true, value = time ) }
                     )
 
-                    color = Other_Tool.getRandomColor()
+                    color = OtherTool.getRandomColor()
                 }
             }
 

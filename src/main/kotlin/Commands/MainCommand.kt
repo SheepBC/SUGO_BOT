@@ -15,7 +15,7 @@ class Main_Command {
 
     init {
         val class_list = mutableListOf<KClass<*>>()
-        class_list.add(Sing_Command.Companion::class)
+        class_list.add(MusicCommand.Companion::class)
 
         command_funcion_instances = getCommand_funs(class_list)
         command_funcions = command_funcion_instances.keys.toList()

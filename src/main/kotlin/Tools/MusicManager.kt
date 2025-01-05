@@ -13,6 +13,7 @@ import com.sedmelluq.discord.lavaplayer.track.AudioTrack
 import com.sedmelluq.discord.lavaplayer.track.AudioTrackEndReason
 import dev.kord.voice.VoiceConnection
 import dev.lavalink.youtube.YoutubeAudioSourceManager
+import kotlinx.coroutines.runBlocking
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 import kotlin.random.Random
@@ -81,12 +82,13 @@ suspend fun DefaultAudioPlayerManager.getTrack(query: String): AudioTrack {
     return track
 }
 fun AudioTrack.getTime(): String{
-    return Other_Tool.secondsToHHMMSS(this.duration)
+    return OtherTool.secondsToHHMMSS(this.duration)
 }
 
 fun AudioTrack.getNowTime(): String{
-    return Other_Tool.secondsToHHMMSS(this.position)
+    return OtherTool.secondsToHHMMSS(this.position)
 }
+
 
 class MusicTask(
     var player: AudioPlayer,
@@ -110,6 +112,13 @@ class MusicTask(
         }
     }
 
+    fun onOff(){
+        runBlocking {
+            voiceConnection.leave()
+        }
+        MusicManager.list.remove(guildId.value)
+    }
+
     override fun onTrackEnd(player: AudioPlayer?, track: AudioTrack?, endReason: AudioTrackEndReason?) {
         when(repeat){
             MusicRepeat.NOT ->{
@@ -119,7 +128,7 @@ class MusicTask(
                     player?.playTrack(tracks[0].makeClone())
                 }
                 else {
-                    MusicManager.list.remove(guildId.value)
+                    onOff()
                 }
 
             }
@@ -129,7 +138,7 @@ class MusicTask(
                     player?.playTrack(tracks[track_index].makeClone())
                 }
                 else {
-                    MusicManager.list.remove(guildId.value)
+                    onOff()
                 }
 
             }
