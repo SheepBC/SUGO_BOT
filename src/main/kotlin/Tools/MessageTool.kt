@@ -1,10 +1,13 @@
 package Tools
 
+import dev.kord.common.annotation.KordExperimental
 import dev.kord.common.entity.DiscordPartialEmoji
 import dev.kord.common.entity.Snowflake
 import dev.kord.core.behavior.channel.createEmbed
 import dev.kord.core.behavior.interaction.response.respond
 import dev.kord.core.behavior.reply
+import dev.kord.core.cache.data.NotSerializable
+import dev.kord.core.cache.data.OptionData
 import dev.kord.core.entity.Member
 import dev.kord.core.entity.Message
 import dev.kord.core.entity.ReactionEmoji
@@ -14,6 +17,7 @@ import dev.kord.core.event.message.MessageCreateEvent
 import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.create.UserMessageCreateBuilder
 import dev.kord.rest.builder.message.modify.InteractionResponseModifyBuilder
+import kotlinx.serialization.Serializable
 
 class Message_Tool {
 
@@ -62,4 +66,9 @@ fun  EmbedBuilder.Companion.Footer(text: String? = null,icon: String? = null): E
     if (icon != null)footer.icon = icon
 
     return footer
+}
+
+@OptIn(KordExperimental::class)
+fun OptionData.getValue(): @Serializable(with = NotSerializable::class) Any? {
+    return this.value.value?.value
 }

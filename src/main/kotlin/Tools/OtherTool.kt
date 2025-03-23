@@ -1,6 +1,12 @@
 package Tools
 
 import dev.kord.common.Color
+import io.ktor.client.*
+import io.ktor.client.request.*
+import io.ktor.client.statement.*
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonElement
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -22,5 +28,17 @@ object OtherTool {
             blue = random.nextInt(0,256),
         )
     }
+
+    val client = HttpClient()
+
+    fun getJson(url: String): JsonElement{
+        val text = fetchWithKtor(url)
+        return Json.parseToJsonElement(text);
+    }
+
+    private fun fetchWithKtor(url: String): String = runBlocking {
+        client.get(url).bodyAsText()
+    }
+
 
 }

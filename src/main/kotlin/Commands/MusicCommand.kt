@@ -14,6 +14,7 @@ import dev.kord.voice.AudioFrame
 
 class MusicCommand{
     companion object {
+
         @Command(["노래","play"])
         suspend fun play(event: MessageCreateEvent, msg_list: List<String>){
 
@@ -300,3 +301,4 @@ class MusicCommand{
         }
     }
 }
+

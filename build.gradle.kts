@@ -1,7 +1,7 @@
 import org.apache.tools.ant.taskdefs.Jar
 
 plugins {
-    kotlin("jvm") version "1.9.23"
+    kotlin("jvm") version "2.1.10"
     id("io.ktor.plugin") version "3.0.3"
 }
 
@@ -27,7 +27,14 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect:1.9.0")
 
     implementation("dev.lavalink.youtube:common:1.11.3")
-    implementation("dev.arbjerg:lavaplayer:2.2.2")
+    implementation("dev.arbjerg:lavaplayer:2.2.3")
+
+    implementation("io.ktor:ktor-client-core:3.1.1")
+    implementation("io.ktor:ktor-client-cio:3.1.1")
+    implementation("io.ktor:ktor-client-content-negotiation:3.1.1")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:3.1.1")
+
+    implementation("org.jetbrains.kotlinx:kandy-lets-plot:0.8.0")
 
 }
 

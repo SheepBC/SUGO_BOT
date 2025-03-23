@@ -16,6 +16,7 @@ class Main_Command {
     init {
         val class_list = mutableListOf<KClass<*>>()
         class_list.add(MusicCommand.Companion::class)
+        class_list.add(GameCommand.Companion::class)
 
         command_funcion_instances = getCommand_funs(class_list)
         command_funcions = command_funcion_instances.keys.toList()
@@ -24,7 +25,7 @@ class Main_Command {
     suspend fun run(event: MessageCreateEvent){
         val msg_list = event.message.content.split(" ")
 
-        val function = getfuncion(msg_list[0].substring(1))!!
+        val function = getFunction(msg_list[0].substring(1))!!
 
         function.callSuspendBy(
             mapOf(
@@ -51,15 +52,14 @@ class Main_Command {
         return list
     }
 
-    private fun getfuncion(command: String): KFunction<*>? {
-        for( funcion in command_funcions){
-            if (funcion.findAnnotation<Command>()!!.commands.contains(command.lowercase())){
-                return funcion
+    private fun getFunction(command: String): KFunction<*>? {
+        for( function in command_funcions){
+            if (function.findAnnotation<Command>()!!.commands.contains(command.lowercase())){
+                return function
             }
         }
         return null;
     }
-
 
 }
 

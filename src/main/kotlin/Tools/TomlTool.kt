@@ -6,16 +6,39 @@ import java.io.File
 
 fun Toml.getToml(file_path: String): Toml{
     val file = File(file_path)
-
-    return Toml().read(file)
+    try {
+        return Toml().read(file)
+    }catch (e: Exception) {
+        file.createNewFile()
+        val reFile = File(file_path)
+        return Toml().read(reFile)
+    }
 }
 
 fun Toml.setString(key: String,value: String){
     val map = this.toMap()
     map[key] = value
-    val new_toml_string = TomlWriter().write(map)
+    val newTomlString = TomlWriter().write(map)
 
-    this.read(new_toml_string)
+    this.read(newTomlString)
+
+}
+
+fun <T> Toml.setType(key: String, value: T){
+    val map = this.toMap()
+    map[key] = value
+    val newTomlString = TomlWriter().write(map)
+
+    this.read(newTomlString)
+
+}
+
+fun Toml.setBoolean(key: String,value: Boolean){
+    val map = this.toMap()
+    map[key] = value
+    val newTomlString = TomlWriter().write(map)
+
+    this.read(newTomlString)
 
 }
 

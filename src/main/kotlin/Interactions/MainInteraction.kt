@@ -1,5 +1,6 @@
 package Interactions
 
+import Configs.GameConfig
 import Configs.MusicConfig
 import Tools.getCustomId
 import dev.kord.core.behavior.channel.createEmbed
@@ -12,6 +13,7 @@ object MainInteraction {
 
         if(customId == MusicConfig.TRACK_LIST) MusicInteraction.list(event)
         if(customId.startsWith(MusicConfig.REPEAT)) MusicInteraction.repeat(event)
+        if(customId.startsWith(GameConfig.COUNTRY_QUIZ)) GameInteraction.countryQuiz(event)
 
     }
 
