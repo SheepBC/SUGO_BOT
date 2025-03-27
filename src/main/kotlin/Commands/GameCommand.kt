@@ -6,19 +6,12 @@ import dev.kord.common.entity.ButtonStyle
 import dev.kord.core.behavior.channel.createMessage
 import dev.kord.core.behavior.edit
 import dev.kord.core.event.message.MessageCreateEvent
-import dev.kord.rest.NamedFile
 import dev.kord.rest.builder.message.EmbedBuilder
 import dev.kord.rest.builder.message.actionRow
 import dev.kord.rest.builder.message.addFile
 import dev.kord.rest.builder.message.embed
-import io.ktor.client.request.forms.*
 import kotlinx.coroutines.delay
 import kotlinx.serialization.json.*
-import org.jetbrains.kotlinx.kandy.dsl.plot
-import org.jetbrains.kotlinx.kandy.letsplot.export.save
-import org.jetbrains.kotlinx.kandy.letsplot.layers.bars
-import org.jetbrains.kotlinx.kandy.letsplot.layers.line
-import java.io.File
 import kotlin.io.path.Path
 
 class GameCommand {
@@ -120,9 +113,13 @@ class GameCommand {
         }
 
         @Command(["나라기록","ㄴㄹㄱㄹ","countryhistory"])
-        suspend fun test(event: MessageCreateEvent, msg_list: List<String>) {
+        suspend fun countryHistory(event: MessageCreateEvent, msg_list: List<String>) {
             val path = GameHistory.getRegionBarsFile()
             val userDate = GameHistory.getGameHistoryUser(event.member?.id?.value!!)
+            var answerPercent = 0
+            if (userDate[0]+userDate[1] != 0){
+                answerPercent = userDate[0]*100/(userDate[0]+userDate[1])
+            }
             event.message.channel.createMessage {
                 embed {
                     title = "나라 맞추기 게임 기록"
@@ -131,7 +128,7 @@ class GameCommand {
                         EmbedBuilder.Field(
                             name = "${event.member?.nickname!!}의 기록",
                             value = "정답: ${userDate[0]}개 오답: ${userDate[1]}개" +
-                                    "정답률: ${userDate[0]*100/(userDate[0]+userDate[1])}%"
+                                    "정답률: ${answerPercent}%"
                         )
                     )
                 }
