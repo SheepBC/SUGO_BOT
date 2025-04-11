@@ -3,15 +3,10 @@ package DataBases
 import Bc.Sheep_BC.Tools.*
 import Configs.GameConfig
 import com.moandjiezana.toml.Toml
-import org.jetbrains.kotlinx.dataframe.api.dataFrameOf
-import org.jetbrains.kotlinx.dataframe.api.gather
-import org.jetbrains.kotlinx.dataframe.api.into
-import org.jetbrains.kotlinx.kandy.dsl.categorical
-import org.jetbrains.kotlinx.kandy.dsl.plot
-import org.jetbrains.kotlinx.kandy.letsplot.export.save
-import org.jetbrains.kotlinx.kandy.letsplot.feature.layout
-import org.jetbrains.kotlinx.kandy.letsplot.layers.bars
-import org.jetbrains.kotlinx.kandy.util.color.Color
+import org.knowm.xchart.BitmapEncoder
+import org.knowm.xchart.CategoryChartBuilder
+import org.knowm.xchart.style.Styler
+import java.awt.Color
 
 object GameHistory {
 
@@ -76,31 +71,23 @@ object GameHistory {
         val collects = List(names.size) { gameToml.getList<Int>(names[it])[0].toInt() }
         val wrongs = List(names.size) {gameToml.getList<Int>(names[it])[1].toInt()}
 
-        val datas = dataFrameOf(
-            "names" to names,
-            "correct" to collects,
-            "wrong" to wrongs,
-        ).gather("correct","wrong").into("Answer","answer")
-        plot(datas) {
-            layout {
-                title = "모든 유저 대륙별 기록"
-            }
-            bars {
-                x("names")
-                y("answer")
-                fillColor("Answer") {
-                    scale = categorical(
-                        "correct" to Color.BLUE,
-                        "wrong" to Color.RED
-                    )
-                }
-            }
+        val chart = CategoryChartBuilder()
+            .width(600)
+            .height(400)
+            .title("모든 유저 대륙별 기록")
+            .xAxisTitle("Name")
+            .yAxisTitle("Answer")
+            .build()
 
-        }.save(
-            filename = "test.png",
-            path = ""
-        )
-        return "test.png"
+        chart.styler.legendPosition =Styler.LegendPosition.InsideNE
+        chart.styler.chartBackgroundColor = Color.WHITE
+        chart.styler.isStacked = false
+
+        chart.addSeries("Correct",names,collects)
+        chart.addSeries("Wrong",names,wrongs)
+        val fileName = "region.png"
+        BitmapEncoder.saveBitmap(chart,fileName,BitmapEncoder.BitmapFormat.PNG)
+        return fileName
     }
 
 }

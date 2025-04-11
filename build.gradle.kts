@@ -34,7 +34,7 @@ dependencies {
     implementation("io.ktor:ktor-client-content-negotiation:3.1.1")
     implementation("io.ktor:ktor-serialization-kotlinx-json:3.1.1")
 
-    implementation("org.jetbrains.kotlinx:kandy-lets-plot:0.8.0")
+    implementation("org.knowm.xchart:xchart:3.8.8")
 
 }
 
