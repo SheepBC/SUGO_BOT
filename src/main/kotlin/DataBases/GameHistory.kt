@@ -74,7 +74,7 @@ object GameHistory {
         val chart = CategoryChartBuilder()
             .width(600)
             .height(400)
-            .title("모든 유저 대륙별 기록")
+            .title("History of Country Game")
             .xAxisTitle("Name")
             .yAxisTitle("Answer")
             .build()

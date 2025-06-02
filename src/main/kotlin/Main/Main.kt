@@ -44,7 +44,6 @@ suspend fun main() {
     val replyCommand = Reply_Command()
 
     kord.on<MessageCreateEvent> {
-
         if (member!!.isBot) return@on
         val msg = message.content
         if(Message_Tool().prefix_check(prefixes,msg)){

@@ -4,6 +4,7 @@ import dev.kord.core.event.message.MessageCreateEvent
 import kotlin.reflect.KClass
 import kotlin.reflect.KFunction
 import kotlin.reflect.full.callSuspendBy
+import kotlin.reflect.full.createInstance
 import kotlin.reflect.full.findAnnotation
 import kotlin.reflect.full.memberFunctions
 

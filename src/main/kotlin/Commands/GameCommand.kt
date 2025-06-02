@@ -27,8 +27,8 @@ class GameCommand {
         private fun setCountryTld() {
             val url = "https://restcountries.com/v3.1/independent?status=true&fields=tld"
             val json = OtherTool.getJson(url)
-
             for(jsonTld in json.jsonArray){
+                if(jsonTld.jsonObject["tld"]!!.jsonArray.isEmpty()) continue
                 var tld = jsonTld.jsonObject["tld"]!!.jsonArray.get(0).toString()
                 tld = tld.replace(".","")
                 tld = tld.replace("\"","")
@@ -39,7 +39,7 @@ class GameCommand {
 
         @Command(["나라","ㄴㄹ","국기","ㄱㄱ","country"])
         suspend fun game(event: MessageCreateEvent, msg_list: List<String>){
-
+            println("123")
             val msg = event.sendMessage("퀴즈 제작중...")
 
             val tld = countryTldList.random()
@@ -122,12 +122,12 @@ class GameCommand {
             }
             event.message.channel.createMessage {
                 embed {
-                    title = "나라 맞추기 게임 기록"
+                    title = "Country Quiz History with User Data"
                     image = "attachment://$path"
                     fields = mutableListOf(
                         EmbedBuilder.Field(
                             name = "${event.member?.nickname!!}의 기록",
-                            value = "정답: ${userDate[0]}개 오답: ${userDate[1]}개" +
+                            value = "정답: ${userDate[0]}개 오답: ${userDate[1]}개 " +
                                     "정답률: ${answerPercent}%"
                         )
                     )
