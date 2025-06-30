@@ -39,7 +39,6 @@ class GameCommand {
 
         @Command(["나라","ㄴㄹ","국기","ㄱㄱ","country"])
         suspend fun game(event: MessageCreateEvent, msg_list: List<String>){
-            println("123")
             val msg = event.sendMessage("퀴즈 제작중...")
 
             val tld = countryTldList.random()
